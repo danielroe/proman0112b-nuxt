@@ -156,6 +156,7 @@ export default defineNuxtModule<ComponentsOptions>({
 
     // Watch for changes
     nuxt.hook('builder:watch', async (event, path) => {
+      path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
       if (!['add', 'unlink'].includes(event)) {
         return
       }

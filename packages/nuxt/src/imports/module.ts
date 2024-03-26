@@ -118,6 +118,7 @@ export default defineNuxtModule<Partial<ImportsOptions>>({
 
     // Watch composables/ directory
     nuxt.hook('builder:watch', async (_, path) => {
+      path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
       const _resolved = resolve(nuxt.options.srcDir, path)
       if (composablesDirs.find(dir => _resolved.startsWith(dir))) {
         await nuxt.callHook('builder:generateApp')

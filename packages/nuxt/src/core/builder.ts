@@ -2,7 +2,7 @@ import chokidar from 'chokidar'
 import type { Nuxt } from '@nuxt/schema'
 import { importModule, isIgnored } from '@nuxt/kit'
 import { debounce } from 'perfect-debounce'
-import { normalize } from 'pathe'
+import { relative, resolve, normalize } from 'pathe'
 import { createApp, generateApp as _generateApp } from './app'
 
 export async function build (nuxt: Nuxt) {
@@ -13,6 +13,7 @@ export async function build (nuxt: Nuxt) {
   if (nuxt.options.dev) {
     watch(nuxt)
     nuxt.hook('builder:watch', async (event, path) => {
+      path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
       if (event !== 'change' && /^(app\.|error\.|plugins\/|middleware\/|layouts\/)/i.test(path)) {
         if (path.startsWith('app')) {
           app.mainComponent = undefined
@@ -55,6 +56,7 @@ function watch (nuxt: Nuxt) {
 }
 
 async function bundle (nuxt: Nuxt) {
+    ( = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, ())
   try {
     const { bundle } = typeof nuxt.options.builder === 'string'
       ? await importModule(nuxt.options.builder, { paths: nuxt.options.rootDir })

@@ -1,3 +1,4 @@
+import { relative, resolve } from 'node:path'
 import type { Server as HttpServer, IncomingMessage, ServerResponse } from 'node:http'
 import type { Server as HttpsServer } from 'node:https'
 import type { Compiler, Configuration, Stats } from 'webpack'
@@ -118,7 +119,8 @@ export interface NuxtHooks {
   // @nuxt/cli
   'generate:cache:ignore': (ignore: string[]) => HookResult
   'config': (options: NuxtConfig) => HookResult
-  'run:before': (options: { argv: string[], cmd: { name: string, usage: string, description: string, options: Record<string, any> }, rootDir: string }) => HookResult
+  'run:before': (options: {
+    path: string = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path: string)) argv: string[], cmd: { name: string, usage: string, description: string, options: Record<string, any> }, rootDir: string }) => HookResult
 
   // nuxi
   'build:error': (error: Error) => HookResult

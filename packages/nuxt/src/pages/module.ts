@@ -33,6 +33,7 @@ export default defineNuxtModule({
 
     // Regenerate templates when adding or removing pages
     nuxt.hook('builder:watch', async (event, path) => {
+      path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
       const dirs = [
         nuxt.options.dir.pages,
         nuxt.options.dir.layouts,
