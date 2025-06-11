@@ -54,9 +54,9 @@ export async function initNitro (nuxt: Nuxt & { _nitro?: Nitro }) {
         .map(dir => ({ dir }))
     ],
     prerender: {
-      crawlLinks: nuxt.options._generate ? nuxt.options.generate.crawler : false,
+      crawlLinks: nuxt.options.nitro.static || (nuxt.options as any)._generate /* TODO: remove in future */ ? nuxt.options.generate.crawler : false,
       routes: ([] as string[])
-        .concat(nuxt.options._generate ? ['/', '/200.html', ...nuxt.options.generate.routes] : [])
+        .concat(nuxt.options.nitro.static || (nuxt.options as any)._generate /* TODO: remove in future */ ? ['/', '/200.html', ...nuxt.options.generate.routes] : [])
         .concat(nuxt.options.ssr === false ? ['/index.html', '/200.html', '/404.html'] : [])
     },
     sourceMap: nuxt.options.sourcemap.server,
@@ -173,7 +173,7 @@ export async function initNitro (nuxt: Nuxt & { _nitro?: Nitro }) {
       await prepare(nitro)
       await copyPublicAssets(nitro)
       await prerender(nitro)
-      if (!nuxt.options._generate) {
+      if (!nuxt.options.nitro.static || (nuxt.options as any)._generate /* TODO: remove in future */) {
         await build(nitro)
       } else {
         const distDir = resolve(nuxt.options.rootDir, 'dist')
